@@ -1,9 +1,8 @@
-// src/components/TaskForm.jsx
 import React, { useState } from 'react';
 import axios from 'axios';
 
 const TaskForm = () => {
-  // State to store form data
+ 
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [status, setStatus] = useState('Pending');
@@ -11,7 +10,7 @@ const TaskForm = () => {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
 
-  // Handle form submission
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -23,11 +22,10 @@ const TaskForm = () => {
     };
 
     try {
-      // Make a POST request to the backend API to create the task
-      const response = await axios.post('http://127.0.0.1:8000/api/v2/tasks/', taskData);
 
-      // If task creation is successful, reset the form and show success message
-      setTitle('');
+      const response = await axios.post('https://todoapp-zroc.onrender.com/api/v2/tasks/', taskData);
+
+      
       setDescription('');
       setStatus('Pending');
       setDueDate('');
@@ -47,7 +45,7 @@ const TaskForm = () => {
       {success && <div className="text-green-500 mb-4">{success}</div>}
 
       <form onSubmit={handleSubmit}>
-        {/* Title Input */}
+    
         <div className="mb-4">
           <label htmlFor="title" className="block text-sm font-medium text-gray-700">Title</label>
           <input
@@ -60,7 +58,7 @@ const TaskForm = () => {
           />
         </div>
 
-        {/* Description Input */}
+
         <div className="mb-4">
           <label htmlFor="description" className="block text-sm font-medium text-gray-700">Description</label>
           <textarea
@@ -72,7 +70,7 @@ const TaskForm = () => {
           />
         </div>
 
-        {/* Status Dropdown */}
+        
         <div className="mb-4">
           <label htmlFor="status" className="block text-sm font-medium text-gray-700">Status</label>
           <select
@@ -87,7 +85,6 @@ const TaskForm = () => {
           </select>
         </div>
 
-        {/* Due Date Input */}
         <div className="mb-4">
           <label htmlFor="due_date" className="block text-sm font-medium text-gray-700">Due Date</label>
           <input
@@ -100,7 +97,6 @@ const TaskForm = () => {
           />
         </div>
 
-        {/* Submit Button */}
         <div className="mt-4">
           <button
             type="submit"

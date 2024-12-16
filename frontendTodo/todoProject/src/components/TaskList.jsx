@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from "react";
-import api from "../api"; // Axios instance for API calls
+import api from "../api"; 
 
 const TaskList = () => {
   const [tasks, setTasks] = useState([]);
-  const [filter, setFilter] = useState(""); // For status filter
-  const [search, setSearch] = useState(""); // For search input
+  const [filter, setFilter] = useState(""); 
+  const [search, setSearch] = useState(""); 
   const [loading, setLoading] = useState(true);
-  const [editingTask, setEditingTask] = useState(null); // The task being edited
+  const [editingTask, setEditingTask] = useState(null); 
 
-  // Fetch tasks from the backend with optional filters
   const fetchTasks = async () => {
     setLoading(true);
     try {
@@ -26,7 +25,7 @@ const TaskList = () => {
     }
   };
 
-  // Update task status directly from the status column
+
   const updateTaskStatus = async (taskId, newStatus) => {
     try {
       const response = await api.patch(`/v2/tasks/${taskId}/`, {
@@ -43,7 +42,7 @@ const TaskList = () => {
     }
   };
 
-  // Handle form submission for editing a task
+
   const handleEditSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -53,18 +52,18 @@ const TaskList = () => {
           task.id === editingTask.id ? response.data : task
         )
       );
-      setEditingTask(null); // Close the modal
+      setEditingTask(null); 
     } catch (error) {
       console.error("Failed to update task:", error);
     }
   };
 
-  // Delete task
+
   const handleDeleteTask = async (taskId) => {
     if (window.confirm("Are you sure you want to delete this task?")) {
       try {
         await api.delete(`/v2/tasks/${taskId}/`);
-        // Remove the task from the local state
+
         setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId));
       } catch (error) {
         console.error("Failed to delete task:", error);
@@ -72,7 +71,7 @@ const TaskList = () => {
     }
   };
 
-  // Fetch tasks on component load or when filters change
+
   useEffect(() => {
     fetchTasks();
   }, [filter, search]);
@@ -81,7 +80,7 @@ const TaskList = () => {
     <div className="p-4">
       <h1 className="text-center text-2xl font-bold mb-4">Task List</h1>
 
-      {/* Filter and Search Controls */}
+
       <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6">
         <div>
           <label className="mr-2 font-medium">Filter by Status:</label>
@@ -114,7 +113,7 @@ const TaskList = () => {
         </div>
       </div>
 
-      {/* Task List */}
+
       {loading ? (
         <p className="text-center">Loading tasks...</p>
       ) : tasks.length > 0 ? (
@@ -153,13 +152,13 @@ const TaskList = () => {
                 <td className="px-4 py-2 border">{task.due_date}</td>
                 <td className="px-4 py-2 border">
                   <button
-                    onClick={() => setEditingTask(task)} // Open the modal for editing
+                    onClick={() => setEditingTask(task)} 
                     className="bg-yellow-500 text-white px-2 py-1 rounded hover:bg-yellow-600"
                   >
                     Edit
                   </button>
                   <button
-                    onClick={() => handleDeleteTask(task.id)} // Delete task
+                    onClick={() => handleDeleteTask(task.id)} 
                     className="bg-red-500 text-white px-2 py-1 rounded ml-2 hover:bg-red-600"
                   >
                     Delete
@@ -173,7 +172,7 @@ const TaskList = () => {
         <p className="text-center text-red-500">No tasks found.</p>
       )}
 
-      {/* Edit Task Modal */}
+
       {editingTask && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded shadow-md w-96">
@@ -221,7 +220,7 @@ const TaskList = () => {
               <div className="flex justify-end">
                 <button
                   type="button"
-                  onClick={() => setEditingTask(null)} // Close the modal
+                  onClick={() => setEditingTask(null)} 
                   className="bg-gray-300 text-gray-700 px-4 py-2 rounded mr-2"
                 >
                   Cancel

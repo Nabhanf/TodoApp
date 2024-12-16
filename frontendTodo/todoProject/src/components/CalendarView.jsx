@@ -1,28 +1,27 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-// Helper function to get the number of days in a month
+
 const getDaysInMonth = (year, month) => {
-  return new Date(year, month, 0).getDate(); // month is 1-indexed here
+  return new Date(year, month, 0).getDate(); 
 };
 
-// Helper function to get the first day of the month
 const getFirstDayOfMonth = (year, month) => {
-  return new Date(year, month - 1, 1).getDay(); // month is 0-indexed here
+  return new Date(year, month - 1, 1).getDay();
 };
 
 const CalendarView = () => {
   const [events, setEvents] = useState([]);
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
-  const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1); // 1-indexed month
+  const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);
   const [days, setDays] = useState([]);
 
-  // Fetch tasks for the selected month and year
+
   const fetchTasks = async (year, month) => {
     try {
       console.log(`Fetching tasks for year: ${year}, month: ${month}`);
       const response = await axios.get(
-        `http://127.0.0.1:8000/api/tasks/calendar/?year=${year}&month=${month}`
+        `https://todoapp-zroc.onrender.com/api/tasks/calendar/?year=${year}&month=${month}`
       );
       setEvents(response.data);
       console.log("Fetched Tasks:", response.data);
@@ -32,22 +31,21 @@ const CalendarView = () => {
     }
   };
 
-  // Generate the days grid for the calendar
   const generateCalendar = () => {
     const daysInMonth = getDaysInMonth(selectedYear, selectedMonth);
     const firstDay = getFirstDayOfMonth(selectedYear, selectedMonth);
 
     const calendarDays = [];
     for (let i = 0; i < firstDay; i++) {
-      calendarDays.push(null); // Empty cells for days before the first day of the month
+      calendarDays.push(null);
     }
     for (let i = 1; i <= daysInMonth; i++) {
-      calendarDays.push(i); // Actual days of the month
+      calendarDays.push(i); 
     }
     setDays(calendarDays);
   };
 
-  // Handle year and month dropdown changes
+
   const handleYearChange = (e) => {
     const newYear = parseInt(e.target.value, 10);
     setSelectedYear(newYear);
@@ -58,7 +56,6 @@ const CalendarView = () => {
     setSelectedMonth(newMonth);
   };
 
-  // Handle navigation for previous and next months
   const handlePrevMonth = () => {
     if (selectedMonth === 1) {
       setSelectedMonth(12);
@@ -91,7 +88,7 @@ const CalendarView = () => {
         {selectedYear}
       </h1>
 
-      {/* Year and Month Dropdowns */}
+  
       <div className="flex justify-center gap-4 mb-4">
         <button
           className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
@@ -132,29 +129,28 @@ const CalendarView = () => {
         </button>
       </div>
 
-      {/* Calendar Grid */}
+
       <div className="grid grid-cols-7 gap-2 text-center">
-        {/* Day Names */}
+      
         {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
           <div key={day} className="font-bold">
             {day}
           </div>
         ))}
 
-        {/* Days */}
         {days.map((day, index) => (
           <div
             key={index}
             className={`p-2 border rounded ${
               day
-                ? "bg-gray-100" // Highlight valid days
+                ? "bg-gray-100" 
                 : "bg-gray-50"
             }`}
           >
             {day && (
               <div>
                 <span className="block">{day}</span>
-                {/* Show events for the day */}
+            
                 {events
                   .filter((event) => new Date(event.due_date).getDate() === day)
                   .map((event, idx) => (
